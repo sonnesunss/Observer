@@ -1,16 +1,21 @@
-// ⚠️ 将行为与数据绑定是trait的核心要义，必须涉及到self参数
+/* ⚠️ 将行为与数据绑定是trait的核心要义，必须涉及到self参数 */
+
+// 订阅者 trait
 pub trait Subscriber {
     fn response(&self, value: i32);
 }
 
+// 发布者 trait
 pub trait Publisher {
     fn add_observer(&mut self, subscriber: Box<dyn Subscriber>);
     fn remove_observer(&mut self);
     fn notify(&self);
 }
 
+// 订阅者
 pub struct Observer;
 
+// 发布者
 #[allow(dead_code)]
 pub struct Publish {
     observer_list: Vec<Box<dyn Subscriber>>,
@@ -18,6 +23,7 @@ pub struct Publish {
     subject: i32,
 }
 
+// 实现发布者
 impl Publish {
     pub fn new() -> Self {
         Publish {
@@ -49,6 +55,7 @@ impl Publisher for Publish {
     }
 }
 
+// 实现订阅者
 impl Subscriber for Observer {
     fn response(&self, value: i32) {
         println!("Observer received new value: {}", value);
